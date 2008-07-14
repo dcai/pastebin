@@ -22,7 +22,7 @@ indexes:
   - name: date
     direction: desc
 
-# Unused in query history -- copied from input.
+# Used 21 times in query history.
 - kind: Snippet
   properties:
   - name: date

@@ -5,6 +5,7 @@ import cgi
 import datetime
 import logging
 import md5
+import math
 import os
 import sys
 import wsgiref.handlers
@@ -34,6 +35,7 @@ def sort_language(a,b):
         return 1
     else:
         return cmp(a['name'].lower(),b['name'].lower())
+
 def get_syntax():
     w = {'java':20,'php':20,'html':20,'javascript':30}
     lexers = get_all_lexers()
@@ -74,16 +76,20 @@ class MainPage(webapp.RequestHandler):
         self.redirect('/n-'+str(code.key().id()))
 
 class ListSnippet(webapp.RequestHandler):
-    def get(self):
+    def get(self, page = 1):
         query = db.GqlQuery("SELECT * FROM Snippet order by date DESC")
-        list = query.fetch(100)
+        limit = 5
+        total = query.count()
+        pages = int(math.ceil(float(total)/float(limit)))
+        logging.info(pages)
+        list = query.fetch(limit, (int(page)-1)*limit)
         count = 2;
         for i in list:
             if count % 2:
                 i.row = True
             count = count + 1
             i.ID = i.key().id()
-        tpl = {"list":list}
+        tpl = {"list":list, "pages": range(1, pages+1), "page":int(page)}
         path = os.path.join(os.path.dirname(__file__), 'views/list.html')
         self.response.out.write(template.render(path, tpl))
 
@@ -167,7 +173,8 @@ class HandleSnippet(webapp.RequestHandler):
 
 application = webapp.WSGIApplication([
     ('/', MainPage),
-    ('/latest', ListSnippet),
+    ('/latest/', ListSnippet),
+    ('/latest/(\d+)', ListSnippet),
     ('/n-(\d+)/(.+)', HandleSnippet),
     ('/n-(\d+)', ViewSnippet),
 ], debug=True)

@@ -28,4 +28,7 @@ blockquote p{margin-top: 1.5em;}
 .btn{padding:.5em 0;font-size:18px}
 .c-0{padding-left:6px;border-left: 18px solid #0AA7D6}
 .c-1{background:#FBFEFE;padding-left: 6px; border-left: 18px solid #E5ECF9}
-#link{text-align:center}
+#paging{margin: 1em 5px;text-align:center}
+#paging a{border: 1px solid gray; padding: 3px}
+#paging a.active{color: white;background: #0AA7D6}
+#link{text-align:center;margin-top: .5em}

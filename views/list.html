@@ -38,5 +38,10 @@
             </blockquote>
             </div>
             {% endfor %}
+            <div id="paging">
+                {% for p in pages%}
+                <a {% ifequal p page %}class='active'{% endifequal %} href='{{p}}'>{{ p }}</a>&nbsp;
+                {% endfor %}
+            </div>
         </div>
 {% extends "footer.html" %}
