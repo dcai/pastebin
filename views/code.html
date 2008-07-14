@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+    <head>
+        <title>Code #{{ ID }} {{ title }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="KEYWORDS" content="" />
+        <meta name="robots" content="index,follow" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/static/code.css" type="text/css" />
+        <style type="text/css" media="screen,projection">
+        /*<![CDATA[*/
+        .linenos pre{background: gray; color: white}
+        {{ css }}
+        .highlight{background:transparent}
+        /*]]>*/
+        </style>
+    </head>
+    <body>
+        <div id="header">
+            <div id='codeid'>
+                <span class='bracket'>[[</span>
+                <i>Code #</i> 
+                <strong>{{ ID }}</strong>
+                <span class='bracket'>]]</span>
+            </div>
+            <h1 id='brand'>CodeLab</h1>
+        </div>
+        <div id="container">
+            <div id='opt'><span><a href="/n-{{ ID }}/raw">Plain</a></span> | <span><a href="/n-{{ ID }}/del">Delete</a></span> | <span>{{ date }}</span></div>
+            <div class='highlight'>
+            {{ code }}
+            </div>
+            <blockquote>
+                {% if not content %}
+                <i>No message.</i>
+                {% else %}
+                {{ content }}
+                {% endif %}
+                <p>--EOF--</p>
+            </blockquote>
+            <i>-- {{ author }}</i>
+        </div>
+{% extends "footer.html" %}

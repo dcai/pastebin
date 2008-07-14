@@ -1,0 +1,31 @@
+body{
+    margin:1em 2em;
+    padding:0;
+    font-family: arial,"Lucida Grande",arial,helvetica,verdana,tahoma,sans-serif;
+	background: #fff url(topbluefade.gif) repeat-x;
+}
+/*h4{border-bottom: 1px solid gray;}*/
+pre{overflow: auto;}
+a{text-decoration:none;color:#0AA7D6;}
+a:hover {color: white;background: #0AA7D6}
+.btn{display:block;width: 200px;float:right;border:1px solid #ccc;text-align:center}
+div{margin:0;padding:0}
+blockquote {
+    color: #454545;
+    margin: 20px 0 20px 20px;
+    background:transparent url(blockquote.gif) no-repeat scroll 0pt 2px;
+    padding-left: 1.5em;
+}
+blockquote p{margin-top: 1.5em;}
+#codeid{float:left;font-size: 28px;}
+#header{text-align: left;}
+#brand{text-align:right;color:#DEE7EC}
+.bracket{color:#DEE7EC}
+#opt{text-align:right;background:#E5ECF9;border-top:1px solid #3366CC;padding: 0.5em}
+#title span{font-size: 14px;color: blue}
+#footer{text-align:center;background:#E5ECF9;}
+#speakform td.l{text-align:right}
+.btn{padding:.5em 0;font-size:18px}
+.c-0{padding-left:6px;border-left: 18px solid #0AA7D6}
+.c-1{background:#FBFEFE;padding-left: 6px; border-left: 18px solid #E5ECF9}
+#link{text-align:center}

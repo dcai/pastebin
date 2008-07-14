@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+    <head>
+        <title>Code #0</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="KEYWORDS" content="" />
+        <meta name="robots" content="index,follow" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/static/code.css" type="text/css" />
+        <script type='text/javascript'>
+        var adv = false;
+        function $(el) {
+            var a = document.getElementById(el);
+            if(a)
+                return a;
+            else
+                return null;
+        }
+        window.onload = function(){
+            var more = $('domore');
+            if(more){
+                more.onclick=function(){
+                    if(!adv){
+                        $('adv').style.display = '';
+                        more.innerHTML = "less";
+                        adv = true;
+                    } else {
+                        more.innerHTML = "more";
+                        $('adv').style.display = 'none';
+                        adv = false;
+                    }
+                }
+            }
+        }
+        </script>
+        <style type="text/css" media="screen,projection">
+        /*<![CDATA[*/
+        {{ css }}
+        /*]]>*/
+        </style>
+    </head>
+    <body>
+        <div id="header">
+            <div id='codeid'>
+                <span class='bracket'>[[</span>
+                <i>Code #</i> 
+                <strong>0</strong>
+                <span class='bracket'>]]</span>
+            </div>
+            <h1 id='brand'>CodeLab</h1>
+        </div>
+        <div id="container">
+<div id='speakform'>
+<form action="/" method="post" name='mindform'>
+<table>
+<tbody>
+    <tr>
+        <td class='l' colspan="2"><a class='btn' href="###" onclick="return mindform.submit()">Speak your mind</a></td>
+    </tr>
+    <tr>
+        <td class='l'><label>Code: </label></td><td><textarea name="code" rows="15" cols="72"></textarea></td>
+    </tr>
+    <tr>
+        <td class='l'><label>Syntax: </label></td><td>
+        <select name="lang">
+            {% for lexer in lexers %}
+            <option value="{{lexer.syn|lower}}">{{lexer.name}}</option>
+            {% endfor %}
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class='l'><a href="###" id='domore'>more</a></td>
+    </tr>
+</tbody>
+<tbody id="adv" style="display:none">
+    <tr>
+        <td class='l'><label>$: </label></td><td><input type="text" value="" name='title' size="60" /></td>
+    </tr>
+    <tr>
+        <td class='l'><label>ID: </label></td><td><input type="text" value="" name='author' size="60" /></td>
+    </tr>
+    <tr>
+        <td class='l'><label>##: </label></td><td><textarea name="content" rows="3" cols="72"></textarea></td>
+    </tr>
+</tbody>
+</table>
+</form>
+</div>
+        </div><!-- container -->
+{% extends "footer.html" %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+    <head>
+        <title>Code //</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="KEYWORDS" content="" />
+        <meta name="robots" content="index,follow" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/static/code.css" type="text/css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id='codeid'>
+                <span class='bracket'>[[</span>
+                <i>Code</i> 
+                <strong>//</strong>
+                <span class='bracket'>]]</span>
+            </div>
+            <h1 id='brand'>CodeLab</h1>
+        </div>
+        <div id="container">
+            {% for i in list %}
+            {% if not i.row %}
+            <div class='c-0'>
+            {% else %}
+            <div class='c-1'>
+            {% endif %}
+            <h4>
+                <span>{{ i.ID }}</span>
+                <a href="n-{{ i.ID }}"> {% if not i.title %} No title {% else %} {{ i.title }} {% endif %} </a>
+            </h4>
+            <blockquote>
+                {% if not i.content %}
+                No Message
+                {% else %}
+                {{ i.content }} 
+                {% endif %}
+            </blockquote>
+            </div>
+            {% endfor %}
+        </div>
+{% extends "footer.html" %}
