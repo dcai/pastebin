@@ -23,6 +23,8 @@ from pygments.lexers import get_all_lexers
 from pygments.formatters import HtmlFormatter
 import chardet
 
+VERIFY_CODE = '1984'
+
 def sort_language(a,b):
     if a.has_key('score') and b.has_key('score'):
         if a['score'] == b['score']:
@@ -62,18 +64,23 @@ class Snippet(db.Model):
 class MainPage(webapp.RequestHandler):
     def get(self):
         lexers = get_syntax()
-        tpl = {'lexers':lexers}
+        tpl = {'lexers':lexers, 'candycode':VERIFY_CODE }
         path = os.path.join(os.path.dirname(__file__), 'views/home.html')
         self.response.out.write(template.render(path, tpl))
     def post(self):
         code = Snippet()
-        code.author  = self.request.get('author')
-        code.title   = self.request.get('title')
-        code.lang    = self.request.get('lang')
-        code.content = self.request.get('content')
-        code.code    = self.request.get('code')
-        code.put()
-        self.redirect('/n-'+str(code.key().id()))
+        candycode = self.request.get('candycode')
+        if candycode == VERIFY_CODE:
+            code.author  = self.request.get('author')
+            code.title   = self.request.get('title')
+            code.lang    = self.request.get('lang')
+            code.content = self.request.get('content')
+            code.code    = self.request.get('code')
+            code.put()
+            self.redirect('/n-'+str(code.key().id()))
+        else:
+            logging.error('Spamer attacked')
+            self.redirect('/')
 
 class ListSnippet(webapp.RequestHandler):
     def get(self, page = 1):
