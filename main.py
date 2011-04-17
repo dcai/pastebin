@@ -77,7 +77,7 @@ class MainPage(webapp.RequestHandler):
             code.content = self.request.get('content')
             code.code    = self.request.get('code')
             code.put()
-            self.redirect('/n-'+str(code.key().id()))
+            self.redirect('/'+str(code.key().id()))
         else:
             logging.error('Spamer attacked')
             self.redirect('/')
@@ -182,8 +182,8 @@ application = webapp.WSGIApplication([
     ('/', MainPage),
     ('/latest/', ListSnippet),
     ('/latest/(\d+)', ListSnippet),
-    ('/n-(\d+)/(.+)', HandleSnippet),
-    ('/n-(\d+)', ViewSnippet),
+    ('/(\d+)/(.+)', HandleSnippet),
+    ('/(\d+)', ViewSnippet),
 ], debug=True)
 
 def main():

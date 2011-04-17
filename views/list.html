@@ -1,9 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
     <head>
         <title>Code //</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="KEYWORDS" content="" />
         <meta name="robots" content="index,follow" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/static/code.css" type="text/css" />
@@ -27,7 +26,7 @@
             {% endif %}
             <h4>
                 <span>{{ i.ID }}</span>
-                <a href="/n-{{ i.ID }}"> {% if not i.title %} No title {% else %} {{ i.title }} {% endif %} </a>
+                <a href="/{{ i.ID }}"> {% if not i.title %} No title {% else %} {{ i.title }} {% endif %} </a>
             </h4>
             <blockquote>
                 {% if not i.content %}

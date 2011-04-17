@@ -33,5 +33,5 @@ if [ $id == 0 ]; then
     echo "Error: Code ID must be specified!"
     exit
 fi
-str=$str" http://localhost:8080/n-$id/update"
+str=$str" http://localhost:8080/$id/update"
 eval $str
