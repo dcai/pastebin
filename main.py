@@ -9,6 +9,7 @@ import math
 import os
 import sys
 import wsgiref.handlers
+import webapp2
 
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -39,7 +40,7 @@ def sort_language(a,b):
         return cmp(a['name'].lower(),b['name'].lower())
 
 def get_syntax():
-    w = {'java':20,'php':20,'html':20,'javascript':30}
+    w = {'text':30,'java':20,'php':20,'html':20,'javascript':30}
     lexers = get_all_lexers()
     result = []
     for i in lexers:
@@ -61,7 +62,7 @@ class Snippet(db.Model):
     lang    = db.StringProperty()
     title   = db.StringProperty()
 
-class MainPage(webapp.RequestHandler):
+class MainPage(webapp2.RequestHandler):
     def get(self):
         lexers = get_syntax()
         tpl = {'lexers':lexers, 'candycode':VERIFY_CODE }
@@ -82,13 +83,12 @@ class MainPage(webapp.RequestHandler):
             logging.error('Spamer attacked')
             self.redirect('/')
 
-class ListSnippet(webapp.RequestHandler):
+class ListSnippet(webapp2.RequestHandler):
     def get(self, page = 1):
         query = db.GqlQuery("SELECT * FROM Snippet order by date DESC")
         limit = 5
         total = query.count()
         pages = int(math.ceil(float(total)/float(limit)))
-        logging.info(pages)
         list = query.fetch(limit, (int(page)-1)*limit)
         count = 2;
         for i in list:
@@ -100,14 +100,14 @@ class ListSnippet(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'views/list.html')
         self.response.out.write(template.render(path, tpl))
 
-class ViewSnippet(webapp.RequestHandler):
+class ViewSnippet(webapp2.RequestHandler):
     def get(self, ID = ""):
         code = Snippet.get_by_id(int(ID))
         css   = HtmlFormatter().get_style_defs('.highlight')
         lexer = get_lexer_by_name(code.lang, stripall=True)
         formatter = HtmlFormatter(encoding='utf-8',nobackground=True)
         formatted = highlight(code.code, lexer, formatter)
-        tpl = {
+        params = {
             'title'  : code.title,
             'author' : code.author,
             'content': code.content,
@@ -117,9 +117,11 @@ class ViewSnippet(webapp.RequestHandler):
             'ID'     : ID,
             'css'    : css
         }
+        logging.info(params)
         path = os.path.join(os.path.dirname(__file__), 'views/code.html')
-        self.response.out.write(template.render(path, tpl))
-class HandleSnippet(webapp.RequestHandler):
+        self.response.out.write(template.render(path, params))
+
+class HandleSnippet(webapp2.RequestHandler):
     def get(self, ID, action):
         code = Snippet.get_by_id(int(ID))
         if action == 'raw':
@@ -178,16 +180,10 @@ class HandleSnippet(webapp.RequestHandler):
             self.response.out.write('Invalid submitted data:\n')
             self.response.out.write(errors)
 
-application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/latest/', ListSnippet),
     ('/latest/(\d+)', ListSnippet),
     ('/(\d+)/(.+)', HandleSnippet),
     ('/(\d+)', ViewSnippet),
 ], debug=True)
-
-def main():
-    wsgiref.handlers.CGIHandler().run(application)
-
-if __name__ == '__main__':
-    main()
