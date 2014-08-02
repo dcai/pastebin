@@ -10,6 +10,7 @@ import os
 import sys
 import wsgiref.handlers
 import webapp2
+from webapp2_extras import sessions
 
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -23,8 +24,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.lexers import get_all_lexers
 from pygments.formatters import HtmlFormatter
 import chardet
-
-VERIFY_CODE = '1984'
+import uuid
 
 def sort_language(a,b):
     if a.has_key('score') and b.has_key('score'):
@@ -48,6 +48,9 @@ def get_syntax():
     result.sort(sort_language)
     return result
 
+def get_verify_code():
+    return str(uuid.uuid4().get_hex().upper()[0:6])
+
 class Snippet(db.Model):
     author  = db.StringProperty()
     content = db.TextProperty()
@@ -56,16 +59,35 @@ class Snippet(db.Model):
     lang    = db.StringProperty()
     title   = db.StringProperty()
 
-class MainPage(webapp2.RequestHandler):
+class BaseHandler(webapp2.RequestHandler):
+    def dispatch(self):
+        # Get a session store for this request.
+        self.session_store = sessions.get_store(request=self.request)
+
+        try:
+            # Dispatch the request.
+            webapp2.RequestHandler.dispatch(self)
+        finally:
+            # Save all sessions.
+            self.session_store.save_sessions(self.response)
+
+    @webapp2.cached_property
+    def session(self):
+        # Returns a session using the default cookie key.
+        return self.session_store.get_session()
+
+class MainPage(BaseHandler):
     def get(self):
+        code = get_verify_code()
+        self.session['verifycode'] = code
         lexers = get_syntax()
-        tpl = {'lexers':lexers, 'candycode':VERIFY_CODE, 'ID': 0 }
+        tpl = {'lexers':lexers, 'candycode':code, 'ID': 0 }
         path = os.path.join(os.path.dirname(__file__), 'template/home.html')
         self.response.out.write(template.render(path, tpl))
     def post(self):
         code = Snippet()
         candycode = self.request.get('candycode')
-        if candycode == VERIFY_CODE:
+        if candycode == self.session.get('verifycode'):
             code.author  = self.request.get('author')
             code.title   = self.request.get('title')
             code.lang    = self.request.get('lang')
@@ -77,7 +99,7 @@ class MainPage(webapp2.RequestHandler):
             logging.error('Spamer attacked')
             self.redirect('/')
 
-class ListSnippet(webapp2.RequestHandler):
+class ListSnippet(BaseHandler):
     def get(self, page = 1):
         query = db.GqlQuery("SELECT * FROM Snippet order by date DESC")
         limit = 5
@@ -94,7 +116,7 @@ class ListSnippet(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'template/list.html')
         self.response.out.write(template.render(path, tpl))
 
-class ViewSnippet(webapp2.RequestHandler):
+class ViewSnippet(BaseHandler):
     def get(self, ID = ""):
         code = Snippet.get_by_id(int(ID))
         css   = HtmlFormatter().get_style_defs('.highlight')
@@ -115,7 +137,7 @@ class ViewSnippet(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'template/code.html')
         self.response.out.write(template.render(path, params))
 
-class HandleSnippet(webapp2.RequestHandler):
+class HandleSnippet(BaseHandler):
     def get(self, ID, action):
         code = Snippet.get_by_id(int(ID))
         if action == 'raw':
