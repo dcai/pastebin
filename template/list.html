@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Code //{% endblock %}
+
+{% block content %}
+    {% for i in list %}
+    {% if not i.row %}
+    <div class='c-0'>
+    {% else %}
+    <div class='c-1'>
+    {% endif %}
+    <h4>
+        <span>{{ i.ID }}</span>
+        <a href="/{{ i.ID }}"> {% if not i.title %} No title {% else %} {{ i.title }} {% endif %} </a>
+    </h4>
+    <blockquote>
+        {% if not i.content %}
+        No Message
+        {% else %}
+        {{ i.content }} 
+        {% endif %}
+    </blockquote>
+    </div>
+    {% endfor %}
+    <div id="paging">
+        {% for p in pages%}
+        <a {% ifequal p page %}class='active'{% endifequal %} href='{{p}}'>{{ p }}</a>&nbsp;
+        {% endfor %}
+    </div>
+{% endblock %}

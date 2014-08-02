@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Code #{{ ID }}{% endblock %}
+
+{% block content %}
+    <div id='opt'><span><a href="/{{ ID }}/raw">Plain</a></span> | <span><a href="/{{ ID }}/del">Delete</a></span> | <span>{{ date }}</span></div>
+    <div class='highlight'>
+    {% autoescape off %}
+        {{ code }}
+    {% endautoescape %}
+    </div>
+    <blockquote>
+        {% if not content %}
+        <i>No message.</i>
+        {% else %}
+        {{ content }}
+        {% endif %}
+        <p>--EOF--</p>
+    </blockquote>
+    <i>-- {{ author }}</i>
+{% endblock %}

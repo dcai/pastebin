@@ -1,11 +1,18 @@
 body{
     margin:1em 2em;
     padding:0;
-    font-family: arial,"Lucida Grande",arial,helvetica,verdana,tahoma,sans-serif;
-	background: #fff url(topbluefade.gif) repeat-x;
+    font-family:"Courier New", Courier, monospace;
+    background: #fff url(topbluefade.gif) repeat-x;
 }
 /*h4{border-bottom: 1px solid gray;}*/
-pre{overflow: auto;}
+pre {
+    font-family:"Courier New", Courier, monospace;
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
 a{text-decoration:none;color:#0AA7D6;}
 a:hover {color: white;background: #0AA7D6}
 .btn{display:block;width: 200px;float:right;border:1px solid #ccc;text-align:center}

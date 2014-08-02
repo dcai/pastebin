@@ -65,8 +65,8 @@ class Snippet(db.Model):
 class MainPage(webapp2.RequestHandler):
     def get(self):
         lexers = get_syntax()
-        tpl = {'lexers':lexers, 'candycode':VERIFY_CODE }
-        path = os.path.join(os.path.dirname(__file__), 'views/home.html')
+        tpl = {'lexers':lexers, 'candycode':VERIFY_CODE, 'ID': 0 }
+        path = os.path.join(os.path.dirname(__file__), 'template/home.html')
         self.response.out.write(template.render(path, tpl))
     def post(self):
         code = Snippet()
@@ -96,8 +96,8 @@ class ListSnippet(webapp2.RequestHandler):
                 i.row = True
             count = count + 1
             i.ID = i.key().id()
-        tpl = {"list":list, "pages": range(1, pages+1), "page":int(page)}
-        path = os.path.join(os.path.dirname(__file__), 'views/list.html')
+        tpl = {"list":list, "pages": range(1, pages+1), "page":int(page), "ID":0}
+        path = os.path.join(os.path.dirname(__file__), 'template/list.html')
         self.response.out.write(template.render(path, tpl))
 
 class ViewSnippet(webapp2.RequestHandler):
@@ -118,7 +118,7 @@ class ViewSnippet(webapp2.RequestHandler):
             'css'    : css
         }
         logging.info(params)
-        path = os.path.join(os.path.dirname(__file__), 'views/code.html')
+        path = os.path.join(os.path.dirname(__file__), 'template/code.html')
         self.response.out.write(template.render(path, params))
 
 class HandleSnippet(webapp2.RequestHandler):
