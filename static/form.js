@@ -1,4 +1,3 @@
-console.info('test');
 function $(el) {
     var a = document.getElementById(el);
     if(a)
