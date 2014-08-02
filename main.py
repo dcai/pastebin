@@ -49,7 +49,7 @@ def get_syntax():
     return result
 
 def get_verify_code():
-    return str(uuid.uuid4().get_hex().upper()[0:6])
+    return str(uuid.uuid4().get_hex().upper()[0:6]).strip().lower()
 
 class Snippet(db.Model):
     author  = db.StringProperty()
@@ -86,7 +86,7 @@ class MainPage(BaseHandler):
         self.response.out.write(template.render(path, tpl))
     def post(self):
         code = Snippet()
-        candycode = self.request.get('candycode')
+        candycode = self.request.get('candycode').strip()
         if candycode == self.session.get('verifycode'):
             code.author  = self.request.get('author')
             code.title   = self.request.get('title')
@@ -133,7 +133,6 @@ class ViewSnippet(BaseHandler):
             'ID'     : ID,
             'css'    : css
         }
-        logging.info(params)
         path = os.path.join(os.path.dirname(__file__), 'template/code.html')
         self.response.out.write(template.render(path, params))
 
