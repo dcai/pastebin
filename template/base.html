@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
+  <head>
+    <title>{% block title %}Code #0{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index,follow" />
+    <script type="text/javascript" src="/static/form.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/static/code.css" type="text/css" />
+    <style type="text/css"> {{ css }} </style>
+    <script type='text/javascript'>
+        var adv = false;
+        window.onload = function(){
+            var more = $('domore');
+            if(more){
+                more.onclick=function(){
+                    if(!adv){
+                        $('adv').style.display = '';
+                        more.innerHTML = "less";
+                        adv = true;
+                    } else {
+                        more.innerHTML = "more";
+                        $('adv').style.display = 'none';
+                        adv = false;
+                    }
+                }
+            }
+        }
+        </script>
+    </head>
+
+    <body>
+        <div id="header">
+            <div id='codeid'>
+                <span class='bracket'>[[</span>
+                <i>Code #</i><strong>{{ ID }}</strong>
+                <span class='bracket'>]]</span>
+            </div>
+            <h1 id='brand'>CodeLab</h1>
+        </div><!-- header -->
+
+        <div id="container">{% block content %}{% endblock %}</div>
+
+        <div id="footer">&copy;2014 Dongsheng Cai</div>
+        <div id='link'>
+            <a href="/">Home</a> | 
+            <a href="/latest/">List</a> | 
+            <a href="http://github.com/dongsheng/pastebin">Source</a> | 
+            <a href="http://dongsheng.org/">About</a>
+        </div>
+    </body>
+</html>

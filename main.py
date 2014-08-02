@@ -121,7 +121,7 @@ class HandleSnippet(webapp2.RequestHandler):
         if action == 'raw':
             self.response.headers['Content-Type'] = 'text/plain; charset=utf-8'
             self.response.out.write(code.code)
-        elif action == 'del':
+        elif action == 'rm':
             code = Snippet.get_by_id(int(ID))
             code.delete()
             self.redirect('/')

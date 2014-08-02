@@ -10,8 +10,7 @@
     <div class='c-1'>
     {% endif %}
     <h4>
-        <span>{{ i.ID }}</span>
-        <a href="/{{ i.ID }}"> {% if not i.title %} No title {% else %} {{ i.title }} {% endif %} </a>
+        <a href="/{{ i.ID }}">#{{ i.ID }}</a> {% if i.title %}<span>{{ i.title }}</span>{% endif %}
     </h4>
     <blockquote>
         {% if not i.content %}
