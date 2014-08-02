@@ -36,7 +36,7 @@ def sort_language(a,b):
         return cmp(a['name'].lower(),b['name'].lower())
 
 def get_syntax():
-    w = {'text':40,'bash':40,'ini':40,'sql':40,'java':20,'php':20,'html':20,'xml':20,'js':30}
+    w = {'text':100,'bash':40,'ini':40,'sql':40,'java':20,'php':20,'html':20,'xml':20,'js':30}
     lexers = get_all_lexers()
     result = []
     for i in lexers:
