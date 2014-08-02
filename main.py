@@ -198,10 +198,13 @@ class HandleSnippet(BaseHandler):
             self.response.out.write('Invalid submitted data:\n')
             self.response.out.write(errors)
 
+config = {}
+config['webapp2_extras.sessions'] = {'secret_key': ''}
+
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/latest/', ListSnippet),
     ('/latest/(\d+)', ListSnippet),
     ('/(\d+)/(.+)', HandleSnippet),
     ('/(\d+)', ViewSnippet),
-], debug=True)
+], config=config)
