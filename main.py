@@ -32,24 +32,18 @@ def sort_language(a,b):
             return cmp(a['name'],b['name'])
         else:
             return -cmp(a['score'], b['score'])
-    elif a.has_key('score') and not b.has_key('score'):
-        return -1
-    elif not a.has_key('score') and b.has_key('score'):
-        return 1
     else:
         return cmp(a['name'].lower(),b['name'].lower())
 
 def get_syntax():
-    w = {'text':30,'java':20,'php':20,'html':20,'javascript':30}
+    w = {'text':40,'java':20,'php':20,'html':20,'js':30}
     lexers = get_all_lexers()
     result = []
     for i in lexers:
-        d={}
-        d['name']=i[0]
-        name = d['name'].lower()
-        if w.has_key(name):
+        d={'name':i[0], 'syn':i[1][0], 'score':0}
+        name = d['syn'].lower()
+        if name in w:
             d['score'] = w[name]
-        d['syn']=i[1][0]
         result.append(d)
     result.sort(sort_language)
     return result
@@ -128,7 +122,9 @@ class HandleSnippet(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'text/plain; charset=utf-8'
             self.response.out.write(code.code)
         elif action == 'del':
-            pass
+            code = Snippet.get_by_id(int(ID))
+            code.delete()
+            self.redirect('/')
 
     def post(self, ID, action):
         isnew   = False
